@@ -8,13 +8,13 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class EmployeeService 
+export class EmployeeService
 {
   private http: HttpClient = inject(HttpClient);
   private apiUrl: string = `${environment.apiUrl}/employees`;
 
   getEmployees() : Observable<Employee[]>
   {
-     return this.http.get<Employee[]>(this.apiUrl); 
+     return this.http.get<Employee[]>(this.apiUrl);
   }
 }

@@ -5,6 +5,17 @@
         <p>Manager and view all employees in your organization</p>
     </div>
     <!-- Header Ends-->
+    <!--  Loading Starts -->
+    @if(isLoading())
+    {
+    <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading employees...</p>
+    </div>
+    }
+    <!--  Loading Ends -->
+    @else
+    {
     <!-- Table Container Starts-->
     <div class="table-container">
         <table class="employee-table">
@@ -25,7 +36,7 @@
             <!--Table Head Ends-->
             <!--Table Body Starts-->
             <tbody>
-                @for(employee of employees; track employee.id)
+                @for(employee of employees(); track employee.id)
                 {
                 <tr>
                     <!-- Employee Name and Avatar Starts -->
@@ -52,9 +63,9 @@
                         </span>
                     </td>
                     <!-- Salary -->
-                    <td>${{employee.salary }}</td>
+                    <td>${{employee.salary | number }}</td>
                     <!-- Join Date -->
-                    <td>{{employee.joinDate }}</td>
+                    <td>{{employee.joinDate | date: 'mediumDate' }}</td>
                     <!-- Actions -->
                     <td>
                         <div class="action">
@@ -68,4 +79,5 @@
             <!--Table Body Ends-->
         </table>
     </div>
+    }
 </div>
