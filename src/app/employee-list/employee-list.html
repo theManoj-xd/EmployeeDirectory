@@ -5,6 +5,20 @@
         <p>Manager and view all employees in your organization</p>
     </div>
     <!-- Header Ends-->
+     <!-- ToolBar Starts-->
+      <div class ="toolbar">
+        <div class ="search-box">
+            <input type = "text" placeholder="Search by name, email, or department..."
+            (input)="onSearch($any($event.target).value)"/>
+
+        </div>
+      </div>
+     <!-- ToolBar Ends-->
+      <!-- Result Counts Starts -->
+       <div class ="results-count">
+        Showing {{employees().length}} of {{allEmployees().length}} employees
+       </div>
+      <!-- Result Counts Ends -->
     <!--  Loading Starts -->
     @if(isLoading())
     {

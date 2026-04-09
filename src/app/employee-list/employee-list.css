@@ -213,3 +213,48 @@
     transform: rotate(360deg);
   }
 }
+/* Toolbar */
+.toolbar
+{
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Search Box */
+.search-box
+{
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-box input
+{
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-box input:focus
+{
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-box input::placeholder
+{
+  color: #94a3b8;
+}
+
+/* Results Count */
+.results-count
+{
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #64748b;
+}
