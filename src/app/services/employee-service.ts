@@ -44,7 +44,7 @@ export class EmployeeService {
     return this.sortDirection();
   }
 
-  getFilteredAndSortedEmployees(): Employee[] {
+  private getFilteredAndSortedEmployeesWithoutPagination(): Employee[] {
     let result = [...this.allEmployees()];
 
     //Apply search filter
@@ -73,14 +73,19 @@ export class EmployeeService {
     //Apply sort
     result = this.applySort(result);
 
+    return result;
+  }
+
+  getFilteredAndSortedEmployees(): Employee[] {
+    const result = this.getFilteredAndSortedEmployeesWithoutPagination();
+
     //Store filtered count before pagination
     this.filteredCount = result.length;
 
     //Apply Pagination
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    result = result.slice(startIndex, endIndex);
-    return result;
+    return result.slice(startIndex, endIndex);
   }
 
   setSearchTerm(term: string): void {
@@ -196,5 +201,30 @@ export class EmployeeService {
     {
       this.currentPage--;
     }
+  }
+
+  deleteEmployee(id: number): void {
+    this.allEmployees.set(this.allEmployees().filter(emp => emp.id !== id));
+
+    // Recalculate filtered count without pagination
+    const filteredEmployees = this.getFilteredAndSortedEmployeesWithoutPagination();
+    this.filteredCount = filteredEmployees.length;
+    
+    // Adjust current page if it exceeds total pages
+    const newTotalPages = Math.ceil(this.filteredCount / this.pageSize);
+    if (this.currentPage > newTotalPages && newTotalPages > 0) {
+      this.currentPage = newTotalPages;
+    }
+  }
+
+  //Update Employee
+  updateEmployee(id: number, updateData: Partial<Employee>): void {
+    const index = this.allEmployees().findIndex(emp => emp.id === id);
+    if (index === -1)
+      return;
+    
+    const updatedEmployees = [...this.allEmployees()];
+    updatedEmployees[index] = { ...updatedEmployees[index], ...updateData };
+    this.allEmployees.set(updatedEmployees);
   }
 }

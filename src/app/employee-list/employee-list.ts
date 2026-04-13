@@ -1,14 +1,15 @@
 import { Component, inject, OnInit, signal, effect } from '@angular/core';
-import { DecimalPipe, DatePipe } from '@angular/common';
+import { DecimalPipe, DatePipe, CurrencyPipe } from '@angular/common';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EmployeeService } from '../services/employee-service';
 import { Employee } from '../models/employee.model';
 
 @Component({
   selector: 'app-employee-list',
-  imports: [CommonModule, DecimalPipe, DatePipe],
+  imports: [CommonModule, DecimalPipe, DatePipe, CurrencyPipe, FormsModule],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css',
 })
@@ -24,6 +25,13 @@ export class EmployeeList implements OnInit {
   departments: string[] = [];
   locations: string[] = [];
   statuses: string[] = [];
+
+  //View or Delete
+  selectedEmployee: Employee | null = null;
+
+  //Editing 
+  editingEmployeeId: number | null = null;
+  editFormData: Partial<Employee> = {};
 
 
   ngOnInit(): void {
@@ -140,4 +148,44 @@ export class EmployeeList implements OnInit {
   get pageNumber(): number[]{
     return [...Array(this.totalPages).keys()].map(i => i + 1);
   } 
+
+  //View or Delete
+  onViewEmployee(employee: Employee): void {
+    this.selectedEmployee = employee;
+  }
+
+  onCloseDetail(): void {
+    this.selectedEmployee = null;
+  }
+
+  onDeleteEmployee(employee: Employee): void {
+    const confirmed: boolean = confirm(`Are you sure you want to delete ${employee.firstName} ${employee.lastName}?`);
+    if (confirmed) {
+      this.employeeService.deleteEmployee(employee.id);
+      this.refreshEmployees();
+    }
+  }
+
+  //Edit Employee 
+  onEditEmployee(employee: Employee): void {
+    this.editingEmployeeId = employee.id;
+    this.editFormData = { ...employee }; //Create a copy for editing
+  }
+
+  onCancelEdit(): void {
+    this.editingEmployeeId = null;
+    this.editFormData = {};
+  }
+
+  onSaveEmployee(): void {
+    if (this.editingEmployeeId == null)
+    {
+      return;
+    }
+    this.employeeService.updateEmployee(this.editingEmployeeId, this.editFormData);
+    this.editingEmployeeId = null;
+    this.editFormData ={};
+    this.refreshEmployees();
+
+  }
 }
