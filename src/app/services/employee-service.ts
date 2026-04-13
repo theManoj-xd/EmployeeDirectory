@@ -23,6 +23,11 @@ export class EmployeeService {
   private filterStatus: string = '';
   private filterLocation: string = '';
 
+  //Pagination Properties
+  private currentPage: number = 1;
+  private pageSize: number = 10;
+  private filteredCount: number = 0;
+
   getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.apiUrl);
   }
@@ -67,11 +72,20 @@ export class EmployeeService {
     }
     //Apply sort
     result = this.applySort(result);
+
+    //Store filtered count before pagination
+    this.filteredCount = result.length;
+
+    //Apply Pagination
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    result = result.slice(startIndex, endIndex);
     return result;
   }
 
   setSearchTerm(term: string): void {
     this.searchTerm.set(term);
+    this.currentPage = 1; //Reset to first page on new search
   }
 
   setSort(column: string): void {
@@ -129,13 +143,58 @@ export class EmployeeService {
 
   setDepartmentFilter(department: string): void {
     this.filterDepartment = department;
+    this.currentPage = 1; //Reset to first page on new filter
   }
 
   setStatusFilter(status: string): void {
     this.filterStatus = status;
+    this.currentPage = 1; //Reset to first page on new filter
   }
 
   setLocationFilter(location: string): void {
     this.filterLocation = location;
+    this.currentPage = 1; //Reset to first page on new filter
+  }
+
+  getCurrentPage(): number {
+    return this.currentPage;
+  }
+
+  getPageSize(): number {
+    return this.pageSize;
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.filteredCount / this.pageSize);
+  }
+
+  getFilteredCount(): number {
+    return this.filteredCount;
+  }
+
+  //Pagination Setters
+  setPage(page: number): void {
+    if (page < 1)
+      return;
+    if (page > this.getTotalPages()) {
+      return;
+    }
+    this.currentPage = page;
+  }
+
+  nextPage(): void
+  {
+    if(this.currentPage < this.getTotalPages())
+    {
+      this.currentPage++;
+    }
+  }
+
+  previousPage(): void
+  {
+    if(this.currentPage > 1)
+    {
+      this.currentPage--;
+    }
   }
 }

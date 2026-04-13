@@ -48,7 +48,14 @@
     <!-- ToolBar Ends-->
     <!-- Result Counts Starts -->
     <div class="results-count">
-        Showing {{employees().length}} of {{totalCount()}} employees
+        @if(filteredCount>0)
+        {
+        Showing {{rangeStart}} to {{rangeEnd}} of {{filteredCount}} employees
+        }
+        @else
+        {
+            No Employees Found
+        }
     </div>
     <!-- Result Counts Ends -->
     <!--  Loading Starts -->
@@ -245,5 +252,18 @@
             <!--Table Body Ends-->
         </table>
     </div>
+    <!-- Table Container Ends-->
+    <!--Pagination Controls Starts-->
+    <div class="pagination">
+        <button class="pagination-btn" (click)="onPreviousPage()" [disabled]="currentPage === 1">Previous</button>
+        <div class="page-numbers">
+            @for(page of pageNumber; track page)
+            {
+            <button class="page-btn" [class.active]="page === currentPage" (click)="onpageChange(page)">{{page}}</button>
+            }
+        </div>
+        <button class="pagination-btn" (click)="onNextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+    <!--Pagination Controls Ends-->
     }
 </div>
