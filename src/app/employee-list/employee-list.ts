@@ -33,6 +33,10 @@ export class EmployeeList implements OnInit {
   editingEmployeeId: number | null = null;
   editFormData: Partial<Employee> = {};
 
+  //Add Employee 
+  showAddForm: boolean = false;
+  newEmployeeData: Partial<Employee> = {};
+
 
   ngOnInit(): void {
     //Setup search subscription
@@ -185,6 +189,33 @@ export class EmployeeList implements OnInit {
     this.employeeService.updateEmployee(this.editingEmployeeId, this.editFormData);
     this.editingEmployeeId = null;
     this.editFormData ={};
+    this.refreshEmployees();
+
+  }
+
+  //Add Employee
+  onToggleAddForm(): void {
+    if(!this.showAddForm)
+    {
+      this.newEmployeeData ={};
+    }
+    this.showAddForm = !this.showAddForm;
+  }
+
+  onCancelAdd(): void{
+    this.showAddForm = false;
+    this.newEmployeeData = {};
+  }
+
+  onAddEmployee(): void {
+    if(!this.newEmployeeData.firstName || !this.newEmployeeData.lastName || !this.newEmployeeData.email)
+    {
+      alert('Please fill in all required fields (First Name, Last Name, Email)');
+      return;
+    }
+    this.employeeService.addEmployee(this.newEmployeeData);
+    this.showAddForm = false;
+    this.newEmployeeData = {};
     this.refreshEmployees();
 
   }

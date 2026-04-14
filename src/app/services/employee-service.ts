@@ -227,4 +227,26 @@ export class EmployeeService {
     updatedEmployees[index] = { ...updatedEmployees[index], ...updateData };
     this.allEmployees.set(updatedEmployees);
   }
+
+  //Add Employee
+  addEmployee(data: Partial<Employee>): void 
+  {
+    const newId = this.allEmployees().reduce((max, emp) => emp.id >max? emp.id : max, 0)+1;
+    const newEmployee: Employee = {
+      id: newId,
+      firstName: data.firstName || '',
+      lastName: data.lastName || '',
+      email: data.email || '',
+      phone: data.phone || '',
+      department: data.department || 'Engineering',
+      designation: data.designation || '',
+      location: data.location || '',
+      salary: data.salary || 0,
+      joinDate: new Date().toISOString().split('T')[0],
+      status: data.status || 'Active',
+      managerId: null,
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + newId
+    };
+    this.allEmployees.set([...this.allEmployees(), newEmployee]);
+  }
 }

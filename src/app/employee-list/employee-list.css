@@ -621,3 +621,81 @@
   background-color: #f1f5f9;
   border-color: #cbd5e1;
 }
+
+/* Header Layout */
+.header
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-content h1
+{
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.header-content p
+{
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* Add Button */
+.btn-add
+{
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #3b82f6;
+  color: #ffffff;
+  transition: background-color 0.15s ease;
+}
+
+.btn-add:hover
+{
+  background-color: #2563eb;
+}
+
+/* Add Form Container */
+.add-form-container
+{
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.add-form-container h3
+{
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+/* Add Form Grid */
+.add-form-grid
+{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* Add Form Actions */
+.add-form-actions
+{
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
